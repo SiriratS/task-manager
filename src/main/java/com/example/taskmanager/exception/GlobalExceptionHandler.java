@@ -12,6 +12,9 @@ import org.springframework.web.context.request.WebRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Global exception handler for the application.
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -29,6 +32,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Handles validation exceptions.
+     *
+     * @param ex      the exception
+     * @param request the web request
+     * @return error response with BAD_REQUEST status
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationExceptions(
             MethodArgumentNotValidException ex, WebRequest request) {
@@ -42,6 +52,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Handles all other exceptions.
+     *
+     * @param ex      the exception
+     * @param request the web request
+     * @return error response with INTERNAL_SERVER_ERROR status
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(
             Exception ex, WebRequest request) {

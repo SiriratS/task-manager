@@ -2,6 +2,11 @@ package com.example.taskmanager.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+/**
+ * Generic API response wrapper.
+ *
+ * @param <T> the type of data in the response
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
     private String status;
@@ -11,11 +16,24 @@ public class ApiResponse<T> {
     public ApiResponse() {
     }
 
+    /**
+     * Constructs an ApiResponse with status and message.
+     *
+     * @param status  the response status
+     * @param message the response message
+     */
     public ApiResponse(String status, String message) {
         this.status = status;
         this.message = message;
     }
 
+    /**
+     * Constructs an ApiResponse with status, message, and data.
+     *
+     * @param status  the response status
+     * @param message the response message
+     * @param data    the response data
+     */
     public ApiResponse(String status, String message, T data) {
         this.status = status;
         this.message = message;

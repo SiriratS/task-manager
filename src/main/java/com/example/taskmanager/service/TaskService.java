@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service class for managing tasks.
+ */
 @Service
 public class TaskService {
 
@@ -31,6 +34,13 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
+    /**
+     * Updates an existing task.
+     *
+     * @param id the task ID
+     * @param taskDetails the updated task details
+     * @return the updated task
+     */
     public Task updateTask(Long id, Task taskDetails) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task", id));
@@ -42,6 +52,11 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
+    /**
+     * Deletes a task by ID.
+     *
+     * @param id the task ID
+     */
     public void deleteTask(Long id) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task", id));

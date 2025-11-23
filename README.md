@@ -58,6 +58,74 @@ mvn spring-boot:run
 
 The application will start on `http://localhost:8080`.
 
+## Testing
+
+This project includes a comprehensive JUnit 5 test suite covering Service, Controller, and Repository layers.
+
+### Running Tests
+
+To run all unit tests:
+```bash
+mvn test
+```
+
+### Code Coverage
+
+The project uses JaCoCo for code coverage reporting. To generate the coverage report:
+
+```bash
+mvn clean test
+```
+
+The report will be available at: `target/site/jacoco/index.html`
+
+## Code Quality & Linting
+
+This project uses two linting tools to ensure code quality and adherence to coding standards:
+
+### Checkstyle
+
+Checkstyle enforces Java coding standards (configured for 4-space indentation). To run Checkstyle:
+
+```bash
+mvn checkstyle:check
+```
+
+To generate a detailed Checkstyle report:
+
+```bash
+mvn checkstyle:checkstyle
+```
+
+The report will be available at: `target/site/checkstyle.html`
+
+### PMD
+
+PMD performs static code analysis to find common programming flaws. To run PMD:
+
+```bash
+mvn pmd:check
+```
+
+To generate a detailed PMD report:
+
+```bash
+mvn pmd:pmd
+```
+
+The report will be available at: `target/site/pmd.html`
+
+### Running All Quality Checks
+
+To run all quality checks (tests, code coverage, Checkstyle, and PMD) at once:
+
+```bash
+mvn clean verify
+```
+
+> **Note**: Both Checkstyle and PMD are configured to fail the build if violations are found. This ensures code quality standards are maintained.
+
+
 ## API Endpoints
 
 | Method | Endpoint      | Description                 |
