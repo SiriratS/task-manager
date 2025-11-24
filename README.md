@@ -11,15 +11,16 @@ A simple task management application built with Spring Boot. This application pr
 
 ## Technologies Used
 
--   **Java 17**
+-   **Java 21**
 -   **Spring Boot 3.2.0**
 -   **Spring Data JPA**
 -   **Spring Web**
--   **H2 Database** (In-memory database)
+-   **H2 Database** (Development - In-memory)
+-   **PostgreSQL** (Production - Cloud database)
 
 ## Prerequisites
 
--   Java Development Kit (JDK) 17 or higher
+-   Java Development Kit (JDK) 21 or higher
 
 ### Optional: Why `mvnw`?
 The Maven Wrapper (`mvnw`) is included as an optional convenience to ensure:
@@ -47,16 +48,74 @@ The Maven Wrapper (`mvnw`) is included as an optional convenience to ensure:
     ```
     > **Note**: If you don't have Maven installed, use `./mvnw clean install` (or `.\mvnw clean install` on Windows).
 
-### Running the Application
+## Environment Configuration
 
-Run the application using Maven:
+This application supports two environments:
+- **Development (`dev`)**: Uses H2 in-memory database
+- **Production (`prod`)**: Uses PostgreSQL (Neon.tech or other cloud providers)
 
+### Development Environment (Default)
+
+The application runs in `dev` mode by default, using H2 database.
+
+**Run the application:**
 ```bash
 mvn spring-boot:run
 ```
-> **Note**: If you don't have Maven installed, use `./mvnw spring-boot:run` (or `.\mvnw spring-boot:run` on Windows).
 
 The application will start on `http://localhost:8080`.
+
+**Access H2 Console:**
+- URL: `http://localhost:8080/h2-console`
+- JDBC URL: `jdbc:h2:mem:testdb`
+- Username: `sa`
+- Password: `password`
+
+### Production Environment
+
+To run with the production database (PostgreSQL), you need to set up environment variables.
+
+#### Option 1: Using `.env` File (Recommended for Local Testing)
+
+1. **Copy the example file:**
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Edit `.env` with your database credentials:**
+   ```properties
+   SPRING_PROFILES_ACTIVE=prod
+   SPRING_DATASOURCE_URL=jdbc:postgresql://your-host.neon.tech/your-database?sslmode=require
+   SPRING_DATASOURCE_USERNAME=your_username
+   SPRING_DATASOURCE_PASSWORD=your_password
+   ```
+
+3. **Run the application:**
+   ```bash
+   mvn spring-boot:run
+   ```
+   
+   The `.env` file will be automatically loaded, and the application will connect to your PostgreSQL database.
+
+#### Option 2: Using Environment Variables (For Cloud Deployment)
+
+Set these environment variables in your hosting platform (Render, Railway, Heroku, etc.):
+
+| Variable | Description | Example |
+|:---------|:------------|:--------|
+| `SPRING_PROFILES_ACTIVE` | Active profile | `prod` |
+| `SPRING_DATASOURCE_URL` | Database connection URL | `jdbc:postgresql://host:5432/db?sslmode=require` |
+| `SPRING_DATASOURCE_USERNAME` | Database username | `your_username` |
+| `SPRING_DATASOURCE_PASSWORD` | Database password | `your_password` |
+
+### Key Differences Between Environments
+
+| Feature | Development (`dev`) | Production (`prod`) |
+|:--------|:-------------------|:--------------------|
+| Database | H2 (in-memory) | PostgreSQL (persistent) |
+| Data Persistence | Lost on restart | Persisted in cloud |
+| H2 Console | Enabled | Disabled |
+| Configuration File | `application-dev.properties` | `application-prod.properties` |
 
 ## Testing
 
@@ -146,12 +205,8 @@ mvn clean verify
 }
 ```
 
-## Database
+## Security Notes
 
-The application uses an in-memory H2 database. You can access the H2 console at:
-
-`http://localhost:8080/h2-console`
-
--   **JDBC URL**: `jdbc:h2:mem:testdb`
--   **User Name**: `sa`
--   **Password**: `password`
+- **Never commit `.env` to Git** - It's already in `.gitignore`
+- Use `.env.example` as a template for other developers
+- For production deployments, use your hosting platform's environment variable settings
